@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ETF 정보</title>
+    <style>
+        .info-box {
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .error {
+            color: red;
+            padding: 10px;
+            border: 1px solid red;
+            border-radius: 5px;
+        }
+        .info-item {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+<h1>Kodex 200 ETF 정보</h1>
+<div th:if="${stockInfo}" class="info-box">
+    <pre th:text="${stockInfo}"></pre>
+</div>
+<div th:if="${error}" class="error">
+    <p th:text="${error}"></p>
+</div>
+</body>
+</html>
