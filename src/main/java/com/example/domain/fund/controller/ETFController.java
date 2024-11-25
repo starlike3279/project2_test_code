@@ -8,20 +8,32 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequiredArgsConstructor    // 생성자 주입을 위한 어노테이션
-@RequestMapping("/api/etf") // 기본 경로 설정
+@RequiredArgsConstructor
+@RequestMapping("/api/etf")
 public class ETFController {
-
-    private final ETFService etfService;  // final로 선언
+    private final ETFService etfService;
 
     @GetMapping("/stock")
     public String getStockInfo(Model model) {
         try {
             String stockInfo = etfService.getStockInfo("069500");
             model.addAttribute("stockInfo", stockInfo);
+            return "stock";  // templates/stock.html
         } catch (Exception e) {
             model.addAttribute("error", "Error fetching stock information: " + e.getMessage());
+            return "error";  // templates/error.html
         }
-        return "stock";
+    }
+
+    @GetMapping("/kodex200")
+    public String getKodex200Info(Model model) {
+        try {
+            String kodex200Info = etfService.getStockInfo("069500");
+            model.addAttribute("etfInfo", kodex200Info);
+            return "etfInfo";  // templates/etfInfo.html
+        } catch (Exception e) {
+            model.addAttribute("error", "Error fetching KODEX 200 information: " + e.getMessage());
+            return "error";  // templates/error.html
+        }
     }
 }
