@@ -1,29 +1,31 @@
 package com.example.domain.fund.model;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
+import lombok.*;
 
+@Entity
 @Getter
-@Setter
-@RequiredArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ETF {
-
-/*
-    ticker는 ETF 종목 고유 코드를 의미
-    나중에 ETF 객체를 생성할 때, ETF kodex200 = new ETF("069500", "KODEX 200", 31000.0);
-    이렇게 특정 ETF의 고유 코드를 설정하여, 나중에 서비스 계층에서 필요한 데이터를 조회하거나
-    응답으로 반환할 때 사용할 수 있음
-*/
-
-    private String ticker;
+    @Id
+    private String code;
     private String name;
-    private double price;
 
-    public ETF(String ticker, String name, double price) {
-        this.ticker = ticker;
+    @Enumerated(EnumType.STRING)
+    private ETFCategory category;
+
+    @Enumerated(EnumType.STRING)
+    private ETFSubCategory subCategory;
+
+    @Builder
+    public ETF(String code, String name, ETFCategory category, ETFSubCategory subCategory) {
+        this.code = code;
         this.name = name;
-        this.price = price;
+        this.category = category;
+        this.subCategory = subCategory;
     }
 }
 
