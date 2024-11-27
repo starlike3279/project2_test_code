@@ -11,29 +11,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 @RequestMapping("/api/etf")
 public class ETFController {
+
     private final ETFService etfService;
 
-    @GetMapping("/stock")
+    @GetMapping("/ETF")
     public String getStockInfo(Model model) {
         try {
-            String stockInfo = etfService.getStockInfo("069500");
-            model.addAttribute("stockInfo", stockInfo);
-            return "stock";  // templates/stock.html
+            String etfInfo = etfService.getETFInfo("069500");
+            model.addAttribute("etfInfo", etfInfo);
         } catch (Exception e) {
             model.addAttribute("error", "Error fetching stock information: " + e.getMessage());
-            return "error";  // templates/error.html
         }
-    }
-
-    @GetMapping("/kodex200")
-    public String getKodex200Info(Model model) {
-        try {
-            String kodex200Info = etfService.getStockInfo("069500");
-            model.addAttribute("etfInfo", kodex200Info);
-            return "etfInfo";  // templates/etfInfo.html
-        } catch (Exception e) {
-            model.addAttribute("error", "Error fetching KODEX 200 information: " + e.getMessage());
-            return "error";  // templates/error.html
-        }
+        return "etfInfo";
     }
 }

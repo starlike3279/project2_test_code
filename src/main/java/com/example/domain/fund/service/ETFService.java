@@ -21,7 +21,7 @@ public class ETFService {
     private final AccessTokenManager accessTokenManager;
     private final ObjectMapper objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
 
-    public String getStockInfo(String stockCode) {
+    public String getETFInfo(String stockCode) {
         StringBuilder result = new StringBuilder(); // 결과 데이터를 누적하여 저장하기 위한 StringBuilder 객체 생성
         try {
             String token = accessTokenManager.getAccessToken(); // 인증 토큰 가져옴
@@ -143,11 +143,11 @@ public class ETFService {
                 if (jsonResponse.has("output2") && jsonResponse.get("output2").isArray()) {
                     JsonNode output2 = jsonResponse.get("output2");
                     if (output2.size() > 0) {
-                        result.append(String.format("%-20s %-10s %-15s %-10s\n", "종목명", "종목코드", "시가총액", "비중(%)"));
+                        result.append(String.format("%-20s %-20s %-20s %-20s\n", "종목명", "종목코드", "비중에 따른 시가총액", "비중(%)"));
 
                         // "=" 이걸 60번 반복 출력
                         // 결과 : "============================================================"
-                        result.append("=".repeat(60)).append("\n");
+                        result.append("=".repeat(100)).append("\n");
 
                         for (JsonNode item : output2) {
                             String stockName = item.path("hts_kor_isnm").asText("N/A"); // 종목명
@@ -158,7 +158,7 @@ public class ETFService {
                             // 20 : 출력할 문자열 최소 폭 지정
                             // 20보다 짧으면 나머지는 공백으로 채워짐
                             // 20보다 길면 잘리지 않고 그대로 출력
-                            result.append(String.format("%-20s %-10s %15s %10s%%\n",
+                            result.append(String.format("%-20s %-20s %20s %20s%%\n",
                                     stockName, stockCodeFromETF, formatNumber(marketCap), formatWeight(weight)));
                         }
                     } else {
