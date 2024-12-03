@@ -26,7 +26,7 @@ public class ETFService {
     public String getETFInfo(String stockCode) {
         StringBuilder result = new StringBuilder(); // 결과 데이터를 누적하여 저장하기 위한 StringBuilder 객체 생성
         try {
-            String token = accessTokenManager.getAccessToken(); // 인증 토큰 가져옴
+            String token = accessTokenManager.getAccessToken(); // 인증 토큰 가져옴 Bearer 토큰
 
             if (token == null || token.isEmpty()) {
                 log.error("액세스 토큰이 비어있습니다."); // 토큰이 없는 경우 에러 기록
@@ -58,17 +58,27 @@ public class ETFService {
             // makeApiCall을 호출하여 API 요청을 보냄(API 응답을 JSON 객체(JsonNode)로 반환)
             JsonNode response = makeApiCall(url, stockCode, "FHPST02400000", token);
 
-            // 응답이 null이 아니거나 output 필드가 있는 경우
+            // 응답이 null이 아니고, output 필드가 있는 경우
             if (response != null && response.has("output")) {
                 JsonNode output = response.get("output");
                 log.info("전체 응답: {}", output.toPrettyString());
+
+                // 구성종목 수를 안전하게 가져온 후 100 이상이면 100으로 제한
+                String etfCountRaw = getNodeTextSafely(output, "etf_cnfg_issu_cnt", "N/A");
+                String etfCount = "N/A"; // 기본값 설정
+                try {
+                    int count = Integer.parseInt(etfCountRaw);
+                    etfCount = count > 100 ? "100" : String.valueOf(count);
+                } catch (NumberFormatException e) {
+                    log.warn("ETF 구성종목 수 변환 중 오류 발생: {}", e.getMessage());
+                }
 
                 // output: JSON에서 필요한 데이터를 추출해 가독성 좋은 문자열로 포맷
                 return String.format("""
                     ETF 기본 정보:
                     종목명: %s
                     회원사명: %s
-                    ETF 구성종목 수: %s개
+                    ETF 구성종목 수(최대 100개): %s개
                     ETF 순자산 총액: %s억 원
                     NAV: %s원
                     전일 최종 NAV: %s원
@@ -79,7 +89,7 @@ public class ETFService {
                     등락률: %s%%""",
                         getNodeTextSafely(output, "etf_rprs_bstp_kor_isnm", "N/A"), // hts_kor_isnm : ETF 이름
                         getNodeTextSafely(output, "mbcr_name", "N/A"), // mbcr_name : 회원사 명
-                        getNodeTextSafely(output, "etf_cnfg_issu_cnt", "N/A"), // etf_cnfg_issu_cnt : ETF 구성종목 수
+                        etfCount, // 구성종목 수 (100 이상이면 100으로 제한)
                         getNodeTextSafely(output, "etf_ntas_ttam", "N/A"), // etf_ntas_ttam : ETF 순자산총액
                         getNodeTextSafely(output, "nav", "N/A"), // nav : ETF nav
                         getNodeTextSafely(output, "prdy_last_nav", "N/A"), // prdy_last_nav : 전일 최종 nav
@@ -213,8 +223,8 @@ public class ETFService {
             headers.setContentType(MediaType.APPLICATION_JSON); // Content-Type : 요청 본문의 데이터 형식(여기서는 JSON)
 
             StringBuilder queryString = new StringBuilder();
-            queryString.append("?FID_COND_MRKT_DIV_CODE=J");
-            queryString.append("&FID_INPUT_ISCD=").append(stockCode);
+            queryString.append("?FID_COND_MRKT_DIV_CODE=J"); // J: 국내 장
+            queryString.append("&FID_INPUT_ISCD=").append(stockCode); // 종목코드
             String requestUrl = url + queryString.toString();
 
             log.info("========== API 요청 정보 ==========");

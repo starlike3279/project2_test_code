@@ -14,6 +14,7 @@ import static com.example.domain.fund.model.ETFSubCategory.*;
 @Service
 @RequiredArgsConstructor
 public class ETFInitService {
+
     private final ETFRepository etfRepository;
 
     @Transactional

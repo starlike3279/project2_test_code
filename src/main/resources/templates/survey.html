@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>투자성향 분석</title>
+    <link rel="stylesheet" href="/static/survey.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>투자성향 분석</h1>
+        </header>
+
+        <section class="instructions">
+            <p>
+                고객님에게 가장 적합한 상품을 제공하기 위해서는 고객님의 정확한 답변이 필요합니다.<br>
+                최대한 고객님의 상황에 부합하거나 가장 가까운 항목을 선택하여 주시기 바랍니다.<br>
+                투자성향 분석은 <strong>1일 2회만 분석</strong> 가능하니 신중히 답변해주시기 바랍니다.
+            </p>
+        </section>
+
+        <section class="questions">
+            <h2>1. 예상 수익률이 높은 상품이 있지만 손실 위험도 있습니다. 어떤 선택을 하시겠습니까?</h2>
+            <ul>
+                <li>
+                    <input type="radio" id="q1_option1" name="q1" value="option1">
+                    <label for="q1_option1">안정적인 자산으로 손실을 최소화합니다.</label>
+                </li>
+                <li>
+                    <input type="radio" id="q1_option2" name="q1" value="option2">
+                    <label for="q1_option2">수익을 극대화하기 위해 도전해봅니다.</label>
+                </li>
+            </ul>
+
+            <h2>2. 투자를 결정할 때, 어떤 점을 더 중요하게 보시나요?</h2>
+            <ul>
+                <li>
+                    <input type="radio" id="q2_option1" name="q2" value="option1">
+                    <label for="q2_option1">현재 가치를 판단할 수 있는 재무 지표</label>
+                </li>
+                <li>
+                    <input type="radio" id="q2_option2" name="q2" value="option2">
+                    <label for="q2_option2">회사의 성장 가능성</label>
+                </li>
+            </ul>
+
+            <h2>3. 원금 손실 가능성이 높은 대신 높은 수익을 기대할 수 있는 상품에 대해 어떻게 생각하시나요?</h2>
+            <ul>
+                <li>
+                    <input type="radio" id="q3_option1" name="q3" value="option1">
+                    <label for="q3_option1">손실 위험이 낮은 안정적인 상품을 선택합니다.</label>
+                </li>
+                <li>
+                    <input type="radio" id="q3_option2" name="q3" value="option2">
+                    <label for="q3_option2">높은 수익을 기대하며 위험을 감수합니다.</label>
+                </li>
+            </ul>
+
+            <h2>4. 시장 변동성이 큰 상황에서 투자 계획은 어떻게 하시겠습니까?</h2>
+            <ul>
+                <li>
+                    <input type="radio" id="q4_option1" name="q4" value="option1">
+                    <label for="q4_option1">변동성이 낮은 자산으로 갈아탑니다.</label>
+                </li>
+                <li>
+                    <input type="radio" id="q4_option2" name="q4" value="option2">
+                    <label for="q4_option2">변동성이 크더라도 장기적인 수익을 기대하며 투자합니다.</label>
+                </li>
+            </ul>
+        </section>
+        <br>
+        <div class="button-container">
+            <button onclick="submitForm()">제출하기</button>
+        </div>
+
+    </div>
+</body>
+</html>
+
+<script>
+    function submitForm() {
+        const answers = {};
+        for (let i = 1; i <= 4; i++) {
+            const selected = document.querySelector(`input[name="q${i}"]:checked`);
+            if (selected) {
+                answers[`q${i}`] = selected.value;
+            }
+        }
+
+        fetch('/api/propensity/submit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(answers),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const resultId = data.resultId; // 서버에서 결과 ID 반환
+                window.location.href = `/result.html?resultId=${resultId}`;
+            } else {
+                alert('결과 저장 중 문제가 발생했습니다.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('결과를 가져오는 중 문제가 발생했습니다.');
+        });
+    }
+</script>
+

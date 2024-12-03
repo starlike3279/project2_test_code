@@ -1,9 +1,6 @@
 package com.example.domain.fund.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -12,9 +9,12 @@ import lombok.*;
 public class ETF {
     @Id
     private String code;
+
+    @Column(name = "etf_name")
     private String name;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "etf_category")
     private ETFCategory category;
 
     @Enumerated(EnumType.STRING)

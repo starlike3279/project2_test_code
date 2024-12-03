@@ -3,6 +3,9 @@
 my_app: "PSlBkPCX0esNWc5Tv1vDYh37FZnf6BPlEACX"
 my_sec: "ucJXLQefoLvC3ObryidOsMBx/DF50MpaKYArOCcyfGStu0og5psl4oR60B2sI55RM9slwmPN/tDvKGS0k+R+1eGR4N4lWltyMtG9DnV1/GLB8h69vcMpm3uHd8EoY5wHGMidM11wblylmKAv3hc+jcyHFe+yyF4BBAhqxwHMaxNoNLpFEd0="
 
+# my_app : App_Key
+# my_sec : App_Secret
+
 #계좌번호 앞 8자리
 my_acct_stock: "74835379"
 my_acct_future: ""

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>추천 ETF</title>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>추천 ETF</h1>
+    </header>
+    <section>
+        <h2>투자 성향 분석 결과에 따른 추천</h2>
+        <ul>
+            <th:block th:each="etf : ${etfs}">
+                <li>
+                    <strong th:text="${etf.name}">ETF 이름</strong> - <span th:text="${etf.category.description}">카테고리</span>
+                </li>
+            </th:block>
+        </ul>
+    </section>
+</div>
+</body>
+</html>

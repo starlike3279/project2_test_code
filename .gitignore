@@ -35,3 +35,10 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# config.yml file
+config.yml
+
+# application-secret
+application-secret.yml
+
