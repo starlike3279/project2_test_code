@@ -1,6 +1,6 @@
 package com.example.domain.fund.repository;
 
-import com.example.domain.fund.model.ETF;
+import com.example.domain.fund.entity.ETF;
 import com.example.domain.fund.model.ETFCategory;
 import com.example.domain.fund.model.ETFSubCategory;
 import org.springframework.data.jpa.repository.JpaRepository;

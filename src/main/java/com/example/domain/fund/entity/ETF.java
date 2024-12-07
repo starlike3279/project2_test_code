@@ -1,5 +1,7 @@
-package com.example.domain.fund.model;
+package com.example.domain.fund.entity;
 
+import com.example.domain.fund.model.ETFCategory;
+import com.example.domain.fund.model.ETFSubCategory;
 import jakarta.persistence.*;
 import lombok.*;
 

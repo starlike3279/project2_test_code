@@ -1,17 +1,15 @@
 package com.example.domain.propercity.service;
 
-import com.example.domain.fund.model.ETF;
+import com.example.domain.fund.entity.ETF;
 import com.example.domain.fund.model.ETFCategory;
 import com.example.domain.fund.model.ETFSubCategory;
 import com.example.domain.fund.repository.ETFRepository;
-import com.example.domain.propercity.controller.PropensityController;
 import com.example.domain.propercity.dto.PropensityDTO;
 import com.example.domain.propercity.entity.Propensity;
 import com.example.domain.propercity.repository.PropensityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -62,40 +60,49 @@ public class PropensityService {
     // 투자 성향 MBTI 기반 추천 ETF 조회
     public List<ETF> getRecommendedETFs(String mbti) {
         switch (mbti) {
-            case "ISTJ":
+            // --- 내향적(I) + 판단형(J) 성향: 보수적이고 안정적인 투자 선호 ---
+            case "ISTJ":  // 현실적, 신중한 성향
                 return etfRepository.findByCategoryAndSubCategory(ETFCategory.BOND, ETFSubCategory.DOMESTIC_BOND);
-            case "ISFJ":
-                return etfRepository.findByCategoryAndSubCategory(ETFCategory.BOND, ETFSubCategory.FOREIGN_BOND);
-            case "INFJ":
+            case "ISFJ":  // 안정 지향적, 보수적 성향
+                return etfRepository.findByCategoryAndSubCategory(ETFCategory.STOCK, ETFSubCategory.LARGE_CAP);
+            case "INFJ":  // 가치 지향적, 장기 투자 선호
+                return etfRepository.findByCategoryAndSubCategory(ETFCategory.SECTOR, ETFSubCategory.HEALTHCARE);
+            case "INTJ":  // 전략적, 분석적 성향
+                return etfRepository.findByCategoryAndSubCategory(ETFCategory.SECTOR, ETFSubCategory.IT_SEMICONDUCTOR);
+
+            // --- 내향적(I) + 인식형(P) 성향: 신중하지만 기회 포착 중시 ---
+            case "ISTP":  // 논리적, 실용적 성향
+                return etfRepository.findByCategoryAndSubCategory(ETFCategory.SECTOR, ETFSubCategory.IT_SEMICONDUCTOR);
+            case "ISFP":  // 예술적, 가치 중시 성향
                 return etfRepository.findByCategoryAndSubCategory(ETFCategory.COMMODITY, ETFSubCategory.PRECIOUS_METAL);
-            case "INTJ":
-                return etfRepository.findByCategoryAndSubCategory(ETFCategory.COMMODITY, ETFSubCategory.PRECIOUS_METAL);
-            case "ISTP":
-                return etfRepository.findByCategoryAndSubCategory(ETFCategory.BOND, ETFSubCategory.DOMESTIC_BOND);
-            case "ISFP":
-                return etfRepository.findByCategoryAndSubCategory(ETFCategory.BOND, ETFSubCategory.FOREIGN_BOND);
-            case "INFP":
-                return etfRepository.findByCategoryAndSubCategory(ETFCategory.COMMODITY, ETFSubCategory.PRECIOUS_METAL);
-            case "INTP":
-                return etfRepository.findByCategoryAndSubCategory(ETFCategory.COMMODITY, ETFSubCategory.PRECIOUS_METAL);
-            case "ESTP":
-                return etfRepository.findByCategoryAndSubCategory(ETFCategory.BOND, ETFSubCategory.DOMESTIC_BOND);
-            case "ESFP":
-                return etfRepository.findByCategoryAndSubCategory(ETFCategory.BOND, ETFSubCategory.FOREIGN_BOND);
-            case "ENFP":
-                return etfRepository.findByCategoryAndSubCategory(ETFCategory.COMMODITY, ETFSubCategory.PRECIOUS_METAL);
-            case "ENTP":
+            case "INFP":  // 이상주의적, 혁신 중시
+                return etfRepository.findByCategoryAndSubCategory(ETFCategory.SECTOR, ETFSubCategory.HEALTHCARE);
+            case "INTP":  // 분석적, 혁신 지향적
                 return etfRepository.findByCategoryAndSubCategory(ETFCategory.STOCK, ETFSubCategory.SMALL_MID_CAP);
-            case "ESTJ":
-                return etfRepository.findByCategoryAndSubCategory(ETFCategory.COMMODITY, ETFSubCategory.PRECIOUS_METAL);
-            case "ESFJ":
-                return etfRepository.findByCategoryAndSubCategory(ETFCategory.BOND, ETFSubCategory.DOMESTIC_BOND);
-            case "ENFJ":
+
+            // --- 외향적(E) + 인식형(P) 성향: 적극적이고 도전적인 투자 성향 ---
+            case "ESTP":  // 모험적, 기회주의적 성향
+                return etfRepository.findByCategoryAndSubCategory(ETFCategory.HighLisk, ETFSubCategory.LEVERAGE);
+            case "ESFP":  // 즉흥적, 기회 포착 성향
+                return etfRepository.findByCategoryAndSubCategory(ETFCategory.STOCK, ETFSubCategory.SMALL_MID_CAP);
+            case "ENFP":  // 열정적, 새로운 기회 추구
+                return etfRepository.findByCategoryAndSubCategory(ETFCategory.SECTOR, ETFSubCategory.IT_SEMICONDUCTOR);
+            case "ENTP":  // 혁신적, 도전적 성향
+                return etfRepository.findByCategoryAndSubCategory(ETFCategory.HighLisk, ETFSubCategory.LEVERAGE);
+
+            // --- 외향적(E) + 판단형(J) 성향: 계획적이고 목표 지향적인 투자 ---
+            case "ESTJ":  // 체계적, 효율성 중시
+                return etfRepository.findByCategoryAndSubCategory(ETFCategory.SECTOR, ETFSubCategory.FINANCE);
+            case "ESFJ":  // 조화로운, 안정 추구
                 return etfRepository.findByCategoryAndSubCategory(ETFCategory.BOND, ETFSubCategory.FOREIGN_BOND);
-            case "ENTJ":
-                return etfRepository.findByCategoryAndSubCategory(ETFCategory.COMMODITY, ETFSubCategory.PRECIOUS_METAL);
+            case "ENFJ":  // 성장 지향적, 영향력 추구
+                return etfRepository.findByCategoryAndSubCategory(ETFCategory.STOCK, ETFSubCategory.LARGE_CAP);
+            case "ENTJ":  // 전략적, 성취 지향적
+                return etfRepository.findByCategoryAndSubCategory(ETFCategory.SECTOR, ETFSubCategory.IT_SEMICONDUCTOR);
+
             default:
-                return etfRepository.findByCategory(ETFCategory.STOCK);
+                // 성향을 판단할 수 없는 경우 안정적인 대형주 ETF 추천
+                return etfRepository.findByCategoryAndSubCategory(ETFCategory.STOCK, ETFSubCategory.LARGE_CAP);
         }
     }
 }

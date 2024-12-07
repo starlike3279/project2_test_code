@@ -17,7 +17,7 @@ public enum ETFSubCategory {
     IT_SEMICONDUCTOR("IT/반도체"),
     FINANCE("금융"),
     HEALTHCARE("헬스케어"),
-    //고위험
+    //고위험(HighLisk)
     LEVERAGE("레버리지"),
     INVERSE("인버스");
 

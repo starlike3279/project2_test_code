@@ -1,7 +1,7 @@
 package com.example.domain.fund.controller;
 
 import com.example.domain.fund.global.RsData.RsData;
-import com.example.domain.fund.model.ETF;
+import com.example.domain.fund.entity.ETF;
 import com.example.domain.fund.service.ETFService;
 import com.example.domain.propercity.dto.PropensityDTO;
 import com.example.domain.propercity.service.PropensityService;
