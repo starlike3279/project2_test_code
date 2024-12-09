@@ -1,7 +1,7 @@
 package com.example.domain.fund.user.entity;
 
 import com.example.domain.fund.global.jpa.BaseEntity;
-import com.example.domain.propercity.entity.Propensity;
+import com.example.domain.propersity.entity.Propensity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
