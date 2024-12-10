@@ -1,4 +1,4 @@
-package com.example.domain.fund.global.jpa;
+package com.example.domain.global.jpa;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

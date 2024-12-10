@@ -5,6 +5,8 @@ import com.example.domain.fund.model.ETFCategory;
 import com.example.domain.fund.model.ETFSubCategory;
 import com.example.domain.fund.repository.ETFRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -102,4 +104,18 @@ public class ETFInitService {
                 .build();
         etfRepository.save(etf);
     }
+
+    // 시작시 etf 데이터 자동 초기화
+    @Component
+    @RequiredArgsConstructor
+    public class DataInitializer implements CommandLineRunner {
+        private final ETFInitService etfInitService;
+
+        @Override
+        public void run(String... args) throws Exception {
+            etfInitService.initializeETFData();
+            System.out.println("ETF 데이터 초기화 완료");
+        }
+    }
+
 }

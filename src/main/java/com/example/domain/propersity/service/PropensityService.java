@@ -4,6 +4,7 @@ import com.example.domain.fund.entity.ETF;
 import com.example.domain.fund.model.ETFCategory;
 import com.example.domain.fund.model.ETFSubCategory;
 import com.example.domain.fund.repository.ETFRepository;
+import com.example.domain.fund.service.ETFService;
 import com.example.domain.propersity.dto.PropensityDTO;
 import com.example.domain.propersity.entity.Propensity;
 import com.example.domain.propersity.repository.PropensityRepository;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +21,7 @@ public class PropensityService {
 
     private final ETFRepository etfRepository;
     private final PropensityRepository propensityRepository;
+    private final ETFService etfService;
 
     // 설문 응답 기반 투자 성향 MBTI 계산
     public String calculateMBTI(Map<String, String> answers) {
@@ -59,7 +62,6 @@ public class PropensityService {
     }
 
     public List<ETF> getRecommendedETFsById(Long id) {
-        // PropensityRepository를 통해 데이터를 가져오고 비즈니스 로직 수행
         Propensity propensity = propensityRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 ID의 투자 성향 데이터가 존재하지 않습니다."));
 
@@ -115,6 +117,33 @@ public class PropensityService {
                 // 성향을 판단할 수 없는 경우 안정적인 대형주 ETF 추천
                 return etfRepository.findByCategoryAndSubCategory(ETFCategory.STOCK, ETFSubCategory.LARGE_CAP);
         }
+    }
+
+    public List<String> getDetailedRecommendedETFsById(Long id) {
+        Propensity propensity = propensityRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 ID의 투자 성향 데이터가 존재하지 않습니다."));
+
+        String mbti = propensity.getSurveyResult();
+        System.out.println("MBTI Result: " + mbti); // MBTI 결과 로그 출력
+
+        List<ETF> recommendedETFs = getRecommendedETFs(mbti);
+        System.out.println("Found ETFs: " + recommendedETFs.size()); // 조회된 ETF 개수 로그 출력
+
+        return recommendedETFs.stream()
+                .map(etf -> {
+                    System.out.println("Processing ETF: " + etf.getCode()); // 각 ETF 처리 로그
+                    String etfInfo = etfService.getETFInfo(etf.getCode());
+                    return String.format("""
+                        ===== %s (%s) =====
+                        %s
+                        """, etf.getName(), etf.getCode(), etfInfo);
+                })
+                .collect(Collectors.toList());
+    }
+
+    // 전체 ETF 조회 메소드 추가
+    public List<ETF> getAllETFs() {
+        return etfRepository.findAll();
     }
 }
 

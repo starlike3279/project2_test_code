@@ -1,4 +1,4 @@
-package com.example.domain.fund.global.RsData;
+package com.example.domain.global.RsData;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
