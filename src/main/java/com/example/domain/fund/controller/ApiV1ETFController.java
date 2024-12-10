@@ -1,14 +1,9 @@
 package com.example.domain.fund.controller;
 
-import com.example.domain.fund.model.ETFCategory;
-import com.example.domain.fund.model.ETFSubCategory;
-import com.example.domain.fund.repository.ETFRepository;
-import com.example.domain.global.RsData.RsData;
+import com.example.global.rsData.RsData;
 import com.example.domain.fund.entity.ETF;
 import com.example.domain.fund.service.ETFService;
 import com.example.domain.propersity.dto.PropensityDTO;
-import com.example.domain.propersity.entity.Propensity;
-import com.example.domain.propersity.repository.PropensityRepository;
 import com.example.domain.propersity.service.PropensityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

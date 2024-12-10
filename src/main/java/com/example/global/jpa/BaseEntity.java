@@ -1,4 +1,4 @@
-package com.example.domain.global.jpa;
+package com.example.global.jpa;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

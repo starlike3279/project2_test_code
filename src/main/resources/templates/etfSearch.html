@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ETF 찾기</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="container">
+    <!-- Search Section -->
+    <h1>ETF 찾기</h1>
+    <div class="search-box">
+        <input type="text" placeholder="ETF를 검색해보세요">
+        <button type="button" class="search-btn">
+            <img src="/api/placeholder/20/20" alt="search">
+        </button>
+    </div>
+
+    <!-- ETF List Section -->
+    <div class="etf-list">
+        <div class="list-header">
+            <div>이름</div>
+            <div>가격</div>
+            <div>1일</div>
+            <div>1주일</div>
+            <div>1개월</div>
+            <div>3개월</div>
+            <div>6개월</div>
+            <div>1년</div>
+        </div>
+
+        <!-- ETF Items -->
+        <div class="etf-item">
+            <div class="etf-name">
+                <img src="/api/placeholder/24/24" alt="kodex" class="etf-icon">
+                <span>Kodex 200선물레버리지</span>
+            </div>
+            <div class="etf-price">2,584</div>
+            <div class="up">0.64</div>
+            <div class="up">20.11</div>
+            <div class="up">24.93</div>
+            <div class="up">27.88</div>
+            <div class="down">-6.77</div>
+            <div class="down">-45.86</div>
+        </div>
+        <!-- More ETF items can be added here -->
+    </div>
+
+    <!-- Best ETF Section -->
+    <div class="best-section">
+        <h2>수익률 Best 펀드</h2>
+        <div class="best-cards">
+            <div class="best-card">
+                <div class="card-header">
+                    <img src="/api/placeholder/40/40" alt="etf" class="card-icon">
+                    <h3>Kodex 미국A레버리지 TOPIX선물인버스</h3>
+                </div>
+                <div class="chart">
+                    <!-- Chart placeholder -->
+                    <div class="chart-line"></div>
+                </div>
+                <div class="return-rate">6.7%</div>
+                <div class="price">15,960원</div>
+            </div>
+            <!-- More best cards can be added here -->
+        </div>
+    </div>
+</div>
+</body>
+</html>
